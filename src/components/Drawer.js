@@ -6,8 +6,10 @@ import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemIcon from '@mui/material/ListItemIcon'
 import ListItemText from '@mui/material/ListItemText'
-import InboxIcon from '@mui/icons-material/MoveToInbox'
-import MailIcon from '@mui/icons-material/Mail'
+import HomeIcon from '@mui/icons-material/Home'
+import AddCircleIcon from '@mui/icons-material/AddCircle'
+import ListIcon from '@mui/icons-material/List'
+import SummarizeIcon from '@mui/icons-material/Summarize'
 import MenuIcon from '@mui/icons-material/Menu'
 import { Link } from 'react-router-dom'
 
@@ -36,10 +38,10 @@ export default function TemporaryDrawer() {
 	}
 
 	const appLinks = [
-		{ url: '/', linkName: 'Home' },
-		{ url: '/add-item', linkName: 'Your items' },
-		{ url: '/summary', linkName: 'Summary' },
-		{ url: '/list', linkName: 'Lists' }
+		{ url: '/', linkName: 'Home', icon: <HomeIcon /> },
+		{ url: '/add-item', linkName: 'Add items', icon: <AddCircleIcon /> },
+		{ url: '/item-list', linkName: 'Lists', icon: <ListIcon /> },
+		{ url: '/summary', linkName: 'Summary', icon: <SummarizeIcon /> }
 	]
 
 	const list = (anchor) => (
@@ -53,7 +55,7 @@ export default function TemporaryDrawer() {
 				{appLinks.map((text, index) => (
 					<ListItem onClick={handleDrawerClose} key={text.linkName} disablePadding component={Link} to={text.url}>
 						<ListItemButton>
-							<ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+							<ListItemIcon>{text.icon}</ListItemIcon>
 							<ListItemText primary={text.linkName} />
 						</ListItemButton>
 					</ListItem>

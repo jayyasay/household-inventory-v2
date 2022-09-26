@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Box, TextField, Button, Typography, FormControl, InputLabel, Select, MenuItem } from '@mui/material'
 import './App.css'
 import '@fontsource/montserrat/400.css'
-import Todo from './components/Todo'
 import { db } from './firebase.js'
-import { collection, onSnapshot, serverTimestamp, addDoc, query, orderBy } from 'firebase/firestore'
+import { collection, serverTimestamp, addDoc } from 'firebase/firestore'
 import { ThemeProvider, createTheme } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import Card from '@mui/material/Card'
@@ -23,10 +22,7 @@ const theme = createTheme({
 	}
 })
 
-const q = query(collection(db, 'todos'), orderBy('timestamp', 'desc'))
-
 function App() {
-	const [todos, setTodos] = useState([])
 	const [input, setInput] = useState('')
 	const [quantity, setQuantity] = useState(1)
 	const [addBtn, setAddBtn] = useState(false)
@@ -37,17 +33,6 @@ function App() {
 	const [success, setSuccess] = useState('primary')
 
 	const categoriesDropDown = ['Pantry', 'Fridge', 'Condiments', 'Others']
-
-	useEffect(() => {
-		onSnapshot(q, (snapshot) => {
-			setTodos(
-				snapshot.docs.map((doc) => ({
-					id: doc.id,
-					item: doc.data()
-				}))
-			)
-		})
-	}, [input, quantity, date, category])
 
 	const addTodo = (e) => {
 		e.preventDefault()
@@ -176,12 +161,6 @@ function App() {
 					</Card>
 				</Box>
 			) : null}
-
-			<ul>
-				{todos.map((item) => (
-					<Todo key={item.id} arr={item} />
-				))}
-			</ul>
 		</div>
 	)
 }
