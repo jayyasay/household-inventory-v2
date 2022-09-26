@@ -23,14 +23,14 @@ export default function Summary() {
 			)
 			setSpinner('')
 		})
-	}, [])
+	}, [q])
 
 	return (
 		<>
 			<Container sx={{ margin: 'auto', display: 'flex', gap: '20px' }}>
 				{spinner}
 				{items.map((item) => (
-					<Card sx={{ minWidth: 275 }}>
+					<Card sx={{ minWidth: 275 }} key={item.item.todo} >
 						<CardContent>
 							<Typography sx={{ fontSize: 14 }} color='text.secondary' gutterBottom>
 								{item.item.todo} {item.item.quantity} {item.item.category}

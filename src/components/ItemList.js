@@ -20,7 +20,7 @@ export default function ItemList() {
 			)
 			setSpinner('')
 		})
-	}, [])
+	}, [q])
 
 	return (
 		<ul>
