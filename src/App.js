@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import Navigation from './components/Navigation'
 import { Box, TextField, Button, Typography, FormControl, InputLabel, Select, MenuItem } from '@mui/material'
 import './App.css'
 import '@fontsource/montserrat/400.css'
@@ -14,6 +13,7 @@ import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import CircularProgress from '@mui/material/CircularProgress'
+import CheckIcon from '@mui/icons-material/Check'
 import moment from 'moment'
 
 const theme = createTheme({
@@ -34,6 +34,7 @@ function App() {
 	const [category, setCategory] = useState('')
 	const [date, setDate] = useState(moment().format('LL'))
 	const [spinner, setSpinner] = useState('Add')
+	const [success, setSuccess] = useState('primary')
 
 	const categoriesDropDown = ['Pantry', 'Fridge', 'Condiments', 'Others']
 
@@ -46,11 +47,11 @@ function App() {
 				}))
 			)
 		})
-	}, [input, quantity])
+	}, [input, quantity, date, category])
 
 	const addTodo = (e) => {
 		e.preventDefault()
-		setSpinner(<CircularProgress color='secondary' />)
+		setSpinner(<CircularProgress color='inherit' size={25} />)
 		setTimeout(() => {
 			addDoc(collection(db, 'todos'), {
 				todo: input,
@@ -59,8 +60,15 @@ function App() {
 				quantity: quantity,
 				timestamp: serverTimestamp()
 			})
-			setSpinner(spinner)
+			setSpinner(<CheckIcon color='inherit' size={25} />)
+			setSuccess('success')
+
+			setTimeout(() => {
+				setSpinner(spinner)
+				setSuccess('primary')
+			}, 1500)
 		}, 2000)
+
 		setInput('')
 		setQuantity(1)
 		setCategory('')
@@ -86,7 +94,6 @@ function App() {
 	}
 	return (
 		<div className='App'>
-			<Navigation />
 			<ThemeProvider theme={theme}>
 				<Typography variant='h1' component='h1' sx={{ margin: '83px 0 41px 0' }}>
 					Add your item
@@ -161,7 +168,7 @@ function App() {
 										renderInput={(params) => <TextField {...params} />}
 									/>
 								</LocalizationProvider>
-								<Button variant='contained' color='primary' onClick={addTodo} style={{ margin: '30px 0 0 0' }}>
+								<Button variant='contained' color={success} onClick={addTodo} style={{ margin: '30px 0 0 0' }}>
 									{spinner}
 								</Button>
 							</FormControl>
