@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
-import { Box, TextField, Button, Typography, FormControl, InputLabel, Select, MenuItem } from '@mui/material'
+import React, { useState, useEffect } from 'react'
+import { Box, TextField, Button, Typography, FormControl, InputLabel, Select } from '@mui/material'
 import './App.css'
 import '@fontsource/montserrat/400.css'
 import { db } from './firebase.js'
-import { collection, serverTimestamp, addDoc } from 'firebase/firestore'
+import { collection, serverTimestamp, addDoc, query, onSnapshot } from 'firebase/firestore'
 import { ThemeProvider, createTheme } from '@mui/material'
 import AddIcon from '@mui/icons-material/Add'
 import Card from '@mui/material/Card'
@@ -14,6 +14,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import CircularProgress from '@mui/material/CircularProgress'
 import CheckIcon from '@mui/icons-material/Check'
 import moment from 'moment'
+import Categories from './components/Categories'
 
 const theme = createTheme({
 	typography: {
@@ -22,17 +23,28 @@ const theme = createTheme({
 	}
 })
 
+const q = query(collection(db, 'categories'))
+
 function App() {
 	const [input, setInput] = useState('')
 	const [quantity, setQuantity] = useState(1)
 	const [addBtn, setAddBtn] = useState(false)
 	const [show, setShow] = useState(false)
-	const [category, setCategory] = useState('')
+	const [category, setCategory] = useState([])
 	const [date, setDate] = useState(moment().format('LL'))
 	const [spinner, setSpinner] = useState('Add')
 	const [success, setSuccess] = useState('primary')
 
-	const categoriesDropDown = ['Pantry', 'Fridge', 'Condiments', 'Others']
+	useEffect(() => {
+		onSnapshot(q, (snapshot) => {
+			setCategory(
+				snapshot.docs.map((doc) => ({
+					id: doc.id,
+					item: doc.data()
+				}))
+			)
+		})
+	}, [])
 
 	const addTodo = (e) => {
 		e.preventDefault()
@@ -56,7 +68,7 @@ function App() {
 
 		setInput('')
 		setQuantity(1)
-		setCategory('')
+		setCategory([])
 		setDate(moment())
 	}
 
@@ -70,9 +82,9 @@ function App() {
 		setAddBtn(true)
 	}
 
-	const handleChange = (event) => {
-		setCategory(event.target.value)
-	}
+	// const handleChange = (event) => {
+	// 	setCategory(event.target.value)
+	// }
 
 	const handleDateChange = (newValue) => {
 		setDate(newValue)
@@ -123,15 +135,16 @@ function App() {
 									<Select
 										labelId='demo-simple-select-label'
 										id='demo-simple-select'
-										value={category}
+										value=''
 										label='Category'
-										onChange={handleChange}
+										onChange={(choice) => setCategory(choice.target.value)}
 									>
-										{categoriesDropDown.map((value) => (
-											<MenuItem key={value} value={value}>
-												{value}
-											</MenuItem>
+										{category.map((item) => (
+											<Categories key={item.id} arr={item}>
+												{item.name}
+											</Categories>
 										))}
+											
 									</Select>
 								</FormControl>
 								<TextField
