@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react'
+import Container from '@mui/material/Container';
 import { db } from '../firebase.js'
 import { collection, onSnapshot, query, orderBy } from 'firebase/firestore'
 import Todo from './Todo.js'
 import CircularProgress from '@mui/material/CircularProgress'
+import Search from './Search.js'
 
 export default function ItemList() {
 	const q = query(collection(db, 'todos'), orderBy('timestamp', 'desc'))
@@ -23,11 +25,14 @@ export default function ItemList() {
 	}, [q])
 
 	return (
-		<ul>
-			{spinner}
-			{todos.map((item) => (
-				<Todo key={item.id} arr={item} />
-			))}
-		</ul>
+		<Container maxWidth="lg">
+			<Search />
+			<ul>
+				{spinner}
+				{todos.map((item) => (
+					<Todo key={item.id} arr={item} />
+				))}
+			</ul>
+		</Container>
 	)
 }
