@@ -7,13 +7,13 @@ import { getFirestore } from 'firebase/firestore'
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-	apiKey: 'AIzaSyAT6xI_5uI6rxaKfX3wi0YUqV6k4x6AfG8',
-	authDomain: 'household-inventory-v2.firebaseapp.com',
-	projectId: 'household-inventory-v2',
-	storageBucket: 'household-inventory-v2.appspot.com',
-	messagingSenderId: '144275038288',
-	appId: '1:144275038288:web:cd9dcd74c3a2a051b3b155',
-	measurementId: 'G-DJY3F0KFNV'
+	apiKey: "AIzaSyD52OFU2lKCo8QRyAgEdbwVfwfSkLH0pDg",
+	authDomain: "household-inventory-v3.firebaseapp.com",
+	projectId: "household-inventory-v3",
+	storageBucket: "household-inventory-v3.appspot.com",
+	messagingSenderId: "658793723629",
+	appId: "1:658793723629:web:506c8d7b3140ec9fde7ee4",
+	measurementId: "G-0LCL0Q745V"
 }
 
 // Initialize Firebase
